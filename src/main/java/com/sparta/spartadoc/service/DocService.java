@@ -37,7 +37,7 @@ public class DocService {
 
         if(doc != null){
             if(doc.getPassword().equals(password)){
-                docRepository.updateDoc(id, password, requestDto);
+                docRepository.updateDoc(id, requestDto);
 
             } else {
                 throw new IllegalArgumentException("That is wrong password");

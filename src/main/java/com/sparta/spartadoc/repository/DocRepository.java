@@ -75,7 +75,7 @@ public class DocRepository {
         }, id);
     }
 
-    public void updateDoc(Long id, String password, DocRequestDto requestDto) {
+    public void updateDoc(Long id, DocRequestDto requestDto) {
         String sql = "UPDATE doc SET title = ?, username = ?, content = ?, writeDay = default WHERE id = ?";
         jdbcTemplate.update(sql, requestDto.getTitle(), requestDto.getUserName(), requestDto.getContent(), id);
     }
