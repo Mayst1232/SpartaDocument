@@ -11,21 +11,15 @@ public class DocResponseDto {
     private String title;
     private String userName;
     private String content;
-    private LocalDateTime writeDay;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     public DocResponseDto(Doc doc) {
         this.id = doc.getId();
         this.userName = doc.getUserName();
         this.title = doc.getTitle();
         this.content = doc.getContent();
-        this.writeDay = doc.getWriteDay();
-    }
-
-    public DocResponseDto(Long id, String title, String userName, String content, LocalDateTime writeDay) {
-        this.id = id;
-        this.title = title;
-        this.userName = userName;
-        this.content = content;
-        this.writeDay = writeDay;
+        this.createdAt = doc.getCreatedAt();
+        this.modifiedAt = doc.getModifiedAt();
     }
 }

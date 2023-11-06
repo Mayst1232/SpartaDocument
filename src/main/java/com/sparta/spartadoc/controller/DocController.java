@@ -3,7 +3,6 @@ package com.sparta.spartadoc.controller;
 import com.sparta.spartadoc.dto.DocRequestDto;
 import com.sparta.spartadoc.dto.DocResponseDto;
 import com.sparta.spartadoc.service.DocService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +12,8 @@ import java.util.List;
 public class DocController {
     private final DocService docService;
 
-    public DocController(JdbcTemplate jdbcTemplate) {
-        this.docService = new DocService(jdbcTemplate);
+    public DocController(DocService docService) {
+        this.docService = docService;
     }
 
     @PostMapping("/docs")

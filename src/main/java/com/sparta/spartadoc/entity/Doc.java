@@ -1,28 +1,39 @@
 package com.sparta.spartadoc.entity;
 
 import com.sparta.spartadoc.dto.DocRequestDto;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Entity
 @Getter
 @Setter
+@Table(name = "doc")
 @NoArgsConstructor
-public class Doc {
+public class Doc extends Timestamped {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "userName", nullable = false)
     private String userName;
+
+    @Column(name = "content", nullable = false)
     private String content;
-    private LocalDateTime writeDay;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
     public Doc(DocRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.userName = requestDto.getUserName();
         this.content = requestDto.getContent();
-        this.writeDay = requestDto.getWriteDay();
         this.password = requestDto.getPassword();
     }
 
@@ -30,6 +41,5 @@ public class Doc {
         this.title = requestDto.getTitle();
         this.userName = requestDto.getUserName();
         this.content = requestDto.getContent();
-        this.writeDay = requestDto.getWriteDay();
     }
 }

@@ -4,8 +4,9 @@ import com.sparta.spartadoc.dto.DocRequestDto;
 import com.sparta.spartadoc.dto.DocResponseDto;
 import com.sparta.spartadoc.entity.Doc;
 import com.sparta.spartadoc.repository.DocRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,8 +14,8 @@ import java.util.List;
 public class DocService {
     private final DocRepository docRepository;
 
-    public DocService(JdbcTemplate jdbcTemplate) {
-        this. docRepository = new DocRepository(jdbcTemplate);
+    public DocService(DocRepository docRepository) {
+        this.docRepository = docRepository;
     }
 
     public DocResponseDto createDoc(DocRequestDto requestDto) {
@@ -25,40 +26,38 @@ public class DocService {
     }
 
     public List<DocResponseDto> getTitleList() {
-        return docRepository.findAllTitle();
+        return docRepository.findAll(Sort.by(Sort.Direction.DESC,"modifiedAt")).stream().map(DocResponseDto::new).toList();
     }
 
     public List<DocResponseDto> getDocument(Long id) {
-        return docRepository.oneDocument(id);
+        return docRepository.findById(id).stream().map(DocResponseDto::new).toList();
     }
 
+    @Transactional
     public void getUpdateDoc(Long id, DocRequestDto requestDto) {
-        Doc doc = docRepository.findById(id);
+        Doc doc = findDoc(id);
 
-        if(doc != null){
-            if(doc.getPassword().equals(requestDto.getPassword())){
-                docRepository.updateDoc(id, requestDto);
-
-            } else {
-                throw new IllegalArgumentException("That is wrong password");
-            }
-        } else {
-            throw new IllegalArgumentException("That Doc is not exist");
+        if(doc.getPassword().equals(requestDto.getPassword())){
+            doc.update(requestDto);
+        }
+        else {
+            throw new IllegalArgumentException("비밀번호가 틀립니다.");
         }
     }
 
     public void getDeleteDoc(Long id, DocRequestDto requestDto) {
-        Doc doc = docRepository.findById(id);
+        Doc doc = findDoc(id);
 
-        if (doc != null) {
-            if (doc.getPassword().equals(requestDto.getPassword())){
-                docRepository.deleteDoc(id);
-                System.out.println("Delecte Success");
-            } else {
-                throw new IllegalArgumentException("That is wrong password");
-            }
-        } else {
-            throw new IllegalArgumentException("That Doc is not exist");
+        if(doc.getPassword().equals(requestDto.getPassword())){
+            docRepository.delete(doc);
         }
+        else {
+            throw new IllegalArgumentException("비밀번호가 틀립니다.");
+        }
+    }
+
+    public Doc findDoc(Long id){
+        return docRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("선택한 메모는 존재하지 않습니다."));
     }
 }
