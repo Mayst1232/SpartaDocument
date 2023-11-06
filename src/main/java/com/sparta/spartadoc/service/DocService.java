@@ -32,11 +32,11 @@ public class DocService {
         return docRepository.oneDocument(id);
     }
 
-    public void getUpdateDoc(Long id, String password, DocRequestDto requestDto) {
+    public void getUpdateDoc(Long id, DocRequestDto requestDto) {
         Doc doc = docRepository.findById(id);
 
         if(doc != null){
-            if(doc.getPassword().equals(password)){
+            if(doc.getPassword().equals(requestDto.getPassword())){
                 docRepository.updateDoc(id, requestDto);
 
             } else {
@@ -47,12 +47,12 @@ public class DocService {
         }
     }
 
-    public void getDeleteDoc(Long id, String password) {
+    public void getDeleteDoc(Long id, DocRequestDto requestDto) {
         Doc doc = docRepository.findById(id);
 
         if (doc != null) {
-            if (doc.getPassword().equals(password)) {
-                docRepository.deleteDoc(id, password);
+            if (doc.getPassword().equals(requestDto.getPassword())){
+                docRepository.deleteDoc(id);
                 System.out.println("Delecte Success");
             } else {
                 throw new IllegalArgumentException("That is wrong password");

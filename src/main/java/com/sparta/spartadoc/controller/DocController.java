@@ -32,15 +32,15 @@ public class DocController {
         return docService.getDocument(id);
     }
 
-    @PutMapping("/docs/{id}/{password}")
-    public String updateDoc(@PathVariable Long id, @PathVariable String password, @RequestBody DocRequestDto requestDto){
-        docService.getUpdateDoc(id,password,requestDto);
+    @PutMapping("/docs/{id}")
+    public String updateDoc(@PathVariable Long id, @RequestBody DocRequestDto requestDto){
+        docService.getUpdateDoc(id, requestDto);
         return "업데이트가 성공했습니다.";
     }
 
-    @DeleteMapping("/docs/{id}/{password}")
-    public String deleteDoc(@PathVariable Long id, @PathVariable String password) {
-        docService.getDeleteDoc(id, password);
+    @DeleteMapping("/docs/{id}")
+    public String deleteDoc(@PathVariable Long id, @RequestBody DocRequestDto requestDto) {
+        docService.getDeleteDoc(id, requestDto);
         return "선택한 게시물이 삭제됐습니다.";
     }
 }

@@ -21,12 +21,6 @@ public class DocResponseDto {
         this.writeDay = doc.getWriteDay();
     }
 
-    public DocResponseDto(Long id, String title, LocalDateTime writeDay) {
-        this.id = id;
-        this.title = title;
-        this.writeDay = writeDay;
-    }
-
     public DocResponseDto(Long id, String title, String userName, String content, LocalDateTime writeDay) {
         this.id = id;
         this.title = title;

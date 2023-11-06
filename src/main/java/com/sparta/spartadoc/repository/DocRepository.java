@@ -46,16 +46,18 @@ public class DocRepository {
 
     public List<DocResponseDto> findAllTitle() {
         // DB 조회
-        String sql = "SELECT id, title, writeDay FROM doc ORDER BY writeDay DESC";
+        String sql = "SELECT id, userName, title, content, writeDay FROM doc ORDER BY writeDay DESC";
 
         return jdbcTemplate.query(sql, new RowMapper<DocResponseDto>() {
             @Override
             public DocResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
                 // SQL 의 결과로 받아온 Memo 데이터들을 MemoResponseDto 타입으로 변환해줄 메서드
                 Long id = rs.getLong("id");
+                String userName = rs.getString("userName");
                 String title = rs.getString("title");
+                String content = rs.getString("content");
                 LocalDateTime writeDay = rs.getTimestamp("writeDay").toLocalDateTime();
-                return new DocResponseDto(id, title, writeDay);
+                return new DocResponseDto(id, userName, title, content, writeDay);
             }
         });
     }
@@ -80,7 +82,7 @@ public class DocRepository {
         jdbcTemplate.update(sql, requestDto.getTitle(), requestDto.getUserName(), requestDto.getContent(), id);
     }
 
-    public void deleteDoc(Long id, String password) {
+    public void deleteDoc(Long id) {
         String sql = "Delete FROM doc WHERE id = ?";
         jdbcTemplate.update(sql,id);
     }
