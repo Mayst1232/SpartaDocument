@@ -26,7 +26,7 @@ public class DocService {
     }
 
     public List<DocResponseDto> getTitleList() {
-        return docRepository.findAll(Sort.by(Sort.Direction.DESC,"modifiedAt")).stream().map(DocResponseDto::new).toList();
+        return docRepository.findAllByOrderByModifiedAtDesc().stream().map(DocResponseDto::new).toList();
     }
 
     public List<DocResponseDto> getDocument(Long id) {
